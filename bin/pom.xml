@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.coffeemachine</groupId>
+  <artifactId>java</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>java</name>
+  <url>http://maven.apache.org</url>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+            <compilerId>groovy-eclipse-compiler</compilerId>
+        </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.9.2-01</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-batch</artifactId>
+                <version>2.4.3-01</version>
+            </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>com.github.temyers</groupId>
+        <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <id>generateRunners</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>generateRunners</goal>
+            </goals>
+            <configuration>
+              <!-- Mandatory -->
+              <!-- comma separated list of package names to scan for glue code -->
+              <glue>com.sedex.qa.stepdef,com.coffeemachine</glue>
+              <!-- These are the default values -->
+              <!-- Where to output the generated Junit tests -->
+              <outputDirectory>${project.build.directory}/generated-test-sources/cucumber
+              </outputDirectory>
+              <!-- The directory containing your feature files.  -->
+              <featuresDirectory>src/test/java/com/coffeemachine/features</featuresDirectory>
+              <!-- Directory where the cucumber report files shall be written  -->
+              <cucumberOutputDir>target/surefire-reports</cucumberOutputDir>
+              <!-- comma separated list of output formats -->
+              <format>json</format>
+              <!-- CucumberOptions.strict property -->
+              <strict>true</strict>
+              <!-- CucumberOptions.monochrome property -->
+              <monochrome>true</monochrome>
+              <!-- The tags to run, maps to CucumberOptions.tags property -->
+              <tags>"@complete"</tags>
+              <!-- If set to true, only feature files containing the required tags shall be generated. -->
+              <!-- Excluded tags (~@notMe) are ignored. -->
+              <filterFeaturesByTags>true</filterFeaturesByTags>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19</version>
+        <configuration>
+          <forkCount>${parallelTests}</forkCount>
+          <reuseForks>true</reuseForks>
+          <includes>
+            <include>**/Parallel*IT.class</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>2.4.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20160810</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>1.2.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>1.2.4</version>
+    </dependency>
+  </dependencies>
+</project>
